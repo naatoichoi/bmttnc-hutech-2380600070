@@ -1,3 +1,5 @@
+import math
+
 class TranspositionCipher:
     def __init__(self):
         pass
@@ -11,36 +13,22 @@ class TranspositionCipher:
                 pointer += key
         return encrypted_text
 
-    # def decrypt(self, text, key):
-    #     decrypted_text = [''] * key
-    #     row, col = 0, 0
-    #     for symbol in text:
-    #         decrypted_text[col] += symbol
-    #         col += 1
-    #         if col == key or (col == key - 1 and row >= len(text) % key):
-    #             col = 0
-    #             row += 1
-    #     return ''.join(decrypted_text)
-    
     def decrypt(self, text, key):
-        num_cols = len(text) // key
-        if len(text) % key != 0:
-            num_cols += 1
-
+        num_cols = math.ceil(len(text) / key)
         num_rows = key
         num_shaded_boxes = (num_cols * num_rows) - len(text)
 
-        decrypted_text = [''] * num_cols
+        plaintext = [''] * num_cols
 
-        row = 0
         col = 0
+        row = 0
 
         for symbol in text:
-            decrypted_text[col] += symbol
+            plaintext[col] += symbol
             col += 1
 
             if (col == num_cols) or (col == num_cols - 1 and row >= num_rows - num_shaded_boxes):
                 col = 0
                 row += 1
 
-        return ''.join(decrypted_text)
+        return ''.join(plaintext)
