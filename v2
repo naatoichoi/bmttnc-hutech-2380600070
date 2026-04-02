@@ -1,0 +1,28 @@
+import subprocess
+from scapy.all import *
+
+# Lấy danh sách interface đúng từ Scapy
+def get_interfaces():
+    return get_if_list()
+
+# Hàm xử lý packet
+def packet_handler(packet):
+    if packet.haslayer(Raw):
+        print("Captured Packet:")
+        print(packet.summary())
+
+# Lấy danh sách interface
+interfaces = get_interfaces()
+
+print("Danh sách các giao diện mạng:")
+for i, iface in enumerate(interfaces, start=1):
+    print(f"{i}. {iface}")
+
+# Chọn interface
+choice = int(input("Chọn một giao diện mạng (nhập số): "))
+selected_iface = interfaces[choice - 1]
+
+print(f"\nĐang bắt gói tin trên: {selected_iface} ...\n")
+
+# Bắt packet
+  sniff(iface=selected_iface, prn=packet_handler, filter="tcp", store=False)
